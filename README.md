@@ -49,7 +49,7 @@ The tool automatically looks for a `tsconfig.json` or `jsconfig.json` walking up
 
 ## Claude Code skill
 
-This package ships a Claude Code skill at [`skills/SKILL.md`](skills/SKILL.md). Install it with [dotagents](https://github.com/getsentry/dotagents):
+This package ships a Claude Code skill at [`skills/check-deprecations/SKILL.md`](skills/check-deprecations/SKILL.md). Install it with [dotagents](https://github.com/getsentry/dotagents):
 
 ```bash
 npx @sentry/dotagents add poulet42/check-deprecations
@@ -61,7 +61,6 @@ Or declare it manually in `agents.toml`:
 [[skills]]
 name = "check-deprecations"
 source = "poulet42/check-deprecations"
-path = "skills"
 ```
 
 Then run:
