@@ -1,0 +1,26 @@
+{
+  "name": "check-deprecations",
+  "version": "1.0.0",
+  "description": "Check for usage of @deprecated JSDoc symbols in a file",
+  "bin": {
+    "check-deprecations": "./bin/check-deprecations.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "deprecated",
+    "jsdoc",
+    "lint"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/poulet42/check-deprecations"
+  },
+  "author": "poulet42",
+  "license": "ISC",
+  "packageManager": "pnpm@10.28.0",
+  "dependencies": {
+    "typescript": "^5.0.0"
+  }
+}
