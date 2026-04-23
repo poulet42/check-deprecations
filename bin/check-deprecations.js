@@ -56,14 +56,46 @@ const deprecated = diagnostics.filter((d) => d.code === 6385 || d.code === 6387)
 
 if (deprecated.length === 0) process.exit(0);
 
-const sourceFile = service.getProgram().getSourceFile(absolutePath);
+const program = service.getProgram();
+const checker = program.getTypeChecker();
+const sourceFile = program.getSourceFile(absolutePath);
 const lines = fs.readFileSync(absolutePath, 'utf8').split('\n');
+
+function findLeafNode(pos) {
+  let found;
+  function visit(node) {
+    if (pos >= node.getStart(sourceFile) && pos < node.getEnd()) {
+      found = node;
+      ts.forEachChild(node, visit);
+    }
+  }
+  ts.forEachChild(sourceFile, visit);
+  return found;
+}
+
+function getDeprecationReason(pos) {
+  const node = findLeafNode(pos);
+  if (!node) return undefined;
+  const symbol = checker.getSymbolAtLocation(node);
+  if (!symbol) return undefined;
+  for (const decl of symbol.declarations ?? []) {
+    for (const tag of ts.getJSDocTags(decl)) {
+      if (tag.tagName.text === 'deprecated' && tag.comment) {
+        const c = tag.comment;
+        return typeof c === 'string' ? c : c.map((p) => (typeof p === 'string' ? p : p.text)).join('');
+      }
+    }
+  }
+  return undefined;
+}
 
 for (const diag of deprecated) {
   const { line, character } = sourceFile.getLineAndCharacterOfPosition(diag.start);
   const message =
     typeof diag.messageText === 'string' ? diag.messageText : diag.messageText.messageText;
-  process.stdout.write(`${filePath}:${line + 1}:${character + 1} - ${message}\n`);
+  const reason = getDeprecationReason(diag.start);
+  const suffix = reason ? ` ${reason}` : '';
+  process.stdout.write(`${filePath}:${line + 1}:${character + 1} - ${message}${suffix}\n`);
   process.stdout.write(`  ${lines[line]}\n\n`);
 }
 
