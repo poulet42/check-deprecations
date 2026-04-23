@@ -76,8 +76,11 @@ function findLeafNode(pos) {
 function getDeprecationReason(pos) {
   const node = findLeafNode(pos);
   if (!node) return undefined;
-  const symbol = checker.getSymbolAtLocation(node);
+  let symbol = checker.getSymbolAtLocation(node);
   if (!symbol) return undefined;
+  if (symbol.flags & ts.SymbolFlags.Alias) {
+    symbol = checker.getAliasedSymbol(symbol);
+  }
   for (const decl of symbol.declarations ?? []) {
     for (const tag of ts.getJSDocTags(decl)) {
       if (tag.tagName.text === 'deprecated' && tag.comment) {
