@@ -1,7 +1,7 @@
 ---
 name: check-deprecations
 description: Check a file for usage of symbols marked @deprecated via JSDoc. Use when asked to "check for deprecated usage", "find deprecated calls", "are there any deprecated APIs here", or "/check-deprecations <file>".
-allowed-tools: Bash(check-deprecations *), Bash(npx check-deprecations *)
+allowed-tools: Bash(npx --yes check-deprecations *), Bash(check-deprecations *)
 ---
 
 # check-deprecations
@@ -11,13 +11,13 @@ Scan a source file for calls to symbols tagged `@deprecated` in their JSDoc.
 ## Usage
 
 ```bash
-check-deprecations <file>
+npx --yes check-deprecations <file>
 ```
 
-If the binary is not on PATH, fall back to:
+If the binary is already on PATH, you may use it directly:
 
 ```bash
-npx check-deprecations <file>
+check-deprecations <file>
 ```
 
 ## Determining the file
