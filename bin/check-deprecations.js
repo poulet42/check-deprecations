@@ -24,17 +24,19 @@ const configPath =
   ts.findConfigFile(path.dirname(absolutePath), ts.sys.fileExists, 'jsconfig.json');
 
 let compilerOptions = { allowJs: true, checkJs: true, noEmit: true };
+let projectFiles = [absolutePath];
 
 if (configPath) {
   const { config, error } = ts.readConfigFile(configPath, ts.sys.readFile);
   if (!error) {
-    const { options } = ts.parseJsonConfigFileContent(config, ts.sys, path.dirname(configPath));
-    compilerOptions = { ...options, noEmit: true };
+    const parsed = ts.parseJsonConfigFileContent(config, ts.sys, path.dirname(configPath));
+    compilerOptions = { ...parsed.options, noEmit: true };
+    projectFiles = parsed.fileNames;
   }
 }
 
 const serviceHost = {
-  getScriptFileNames: () => [absolutePath],
+  getScriptFileNames: () => projectFiles,
   getScriptVersion: () => '0',
   getScriptSnapshot: (fileName) =>
     fs.existsSync(fileName)
