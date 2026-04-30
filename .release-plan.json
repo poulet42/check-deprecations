@@ -1,0 +1,18 @@
+{
+  "solution": {
+    "check-deprecations": {
+      "impact": "patch",
+      "oldVersion": "1.0.0",
+      "newVersion": "1.0.1",
+      "tagName": "latest",
+      "constraints": [
+        {
+          "impact": "patch",
+          "reason": "Appears in changelog section :house: Internal"
+        }
+      ],
+      "pkgJSONPath": "./package.json"
+    }
+  },
+  "description": "## Release (2026-04-30)\n\n* check-deprecations 1.0.1 (patch)\n\n#### :house: Internal\n* `check-deprecations`\n  * [#1](https://github.com/poulet42/check-deprecations/pull/1) include all tsconfig files so module augmentations are visible ([@poulet42](https://github.com/poulet42))\n\n#### Committers: 1\n- Corentin ([@poulet42](https://github.com/poulet42))\n"
+}
